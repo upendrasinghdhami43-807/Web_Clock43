@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StClock</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Orbitron:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="bg-grid"></div>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="nav-left">
+                <img src="assets/icons/StClockLogo.jpg" alt="StClock Logo" class="logo-icon"
+                    style="border-radius: 6px; object-fit: cover;">
+                <div class="logo-text-group">
+                    <h1 class="logo-text">StClock</h1>
+                    <span class="logo-subtext">by Upendra Labs</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="nav-link">Holidays</a>
+                <div class="dropdown">
+                    <button class="nav-btn" id="tools-btn">Tools <i data-lucide="chevron-down"
+                            class="icon-sm"></i></button>
+                    <div class="dropdown-content" id="tools-dropdown">
+                        <a href="#" class="dropdown-item" data-tool="nepali-calendar">
+                            <i data-lucide="calendar"></i> Nepali Calendar
+                        </a>
+                        <a href="#" class="dropdown-item" data-tool="english-calendar">
+                            <i data-lucide="calendar-days"></i> English Calendar
+                        </a>
+                        <a href="#" class="dropdown-item" data-tool="dollar-exchange">
+                            <i data-lucide="dollar-sign"></i> Dollar Exchange
+                        </a>
+                        <a href="#" class="dropdown-item" data-tool="coins">
+                            <i data-lucide="coins"></i> Gold Rate
+                        </a>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <div class="nav-icons">
+                    <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+                        <i data-lucide="moon" class="moon-icon"></i>
+                        <i data-lucide="sun" class="sun-icon"></i>
+                    </button>
+                    <button class="icon-btn" id="settings-toggle" aria-label="Settings" title="Settings">
+                        <i data-lucide="settings"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <nav class="side-menu">
+                <button class="menu-item" data-view="alarm">
+                    <i data-lucide="alarm-clock"></i> <span>Alarm Clock</span>
+                </button>
+                <button class="menu-item" data-view="timer">
+                    <i data-lucide="timer"></i> <span>Timer</span>
+                </button>
+                <button class="menu-item active" data-view="stopwatch">
+                    <i data-lucide="play-square"></i> <span>Stopwatch</span>
+                </button>
+                <button class="menu-item" data-view="time">
+                    <i data-lucide="clock"></i> <span>Time</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Central Display -->
+        <main class="main-content">
+            <!-- Utility Bar -->
+            <div class="utility-bar">
+                <button class="utility-icon-btn" id="zoom-out-btn" aria-label="Zoom Out" title="Zoom Out"><i
+                        data-lucide="zoom-out"></i></button>
+                <button class="utility-icon-btn" id="zoom-in-btn" aria-label="Zoom In" title="Zoom In"><i
+                        data-lucide="zoom-in"></i></button>
+                <button class="utility-icon-btn" id="fullscreen-btn" aria-label="Fullscreen" title="Fullscreen"><i
+                        data-lucide="expand"></i></button>
+            </div>
+
+            <!-- Views container -->
+            <div id="view-alarm" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="alarm-clock" class="placeholder-icon"></i>
+                    <h2>Alarm Clock</h2>
+                    <p>Feature in development</p>
+                    <button id="test-alarm-btn" class="control-btn btn-primary mt-16">Test Alarm Audio</button>
+                </div>
+            </div>
+
+            <div id="view-timer" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="timer" class="placeholder-icon"></i>
+                    <h2>Timer</h2>
+                    <p>Feature in development</p>
+                </div>
+            </div>
+
+            <div id="view-stopwatch" class="view-section active-view">
+                <div class="stopwatch-container">
+                    <div class="time-display-wrapper glass-card">
+                        <div class="stopwatch-heading-row">
+                            <p class="eyebrow">Precision Runner</p>
+                            <p id="stopwatch-status" class="status-pill">Ready</p>
+                        </div>
+                        <h2 id="main-time-display" class="time-display digital-font" aria-live="polite">
+                            <span id="time-minutes" class="time-major">00</span>
+                            <span class="time-separator">:</span>
+                            <span id="time-seconds" class="time-minor">00</span>
+                            <span id="time-fraction" class="time-fraction">.00</span>
+                        </h2>
+                        <p class="display-note">Seconds and milliseconds are reduced for calmer readability.</p>
+                    </div>
+                    <div class="time-controls">
+                        <button id="lap-btn" class="control-btn btn-ghost">Lap</button>
+                        <button id="reset-btn" class="control-btn btn-secondary">Reset</button>
+                        <button id="start-btn" class="control-btn btn-primary">Start</button>
+                    </div>
+                    <div class="laps-card glass-card">
+                        <div class="laps-header">
+                            <h3>Laps</h3>
+                            <span id="lap-count" class="lap-count">0</span>
+                        </div>
+                        <div id="laps-list" class="laps-list">
+                            <p class="laps-empty">No laps yet. Press Lap while running.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-time" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="clock" class="placeholder-icon"></i>
+                    <h2>Time</h2>
+                    <p>Feature in development</p>
+                </div>
+            </div>
+
+            <!-- New Tool Views -->
+            <div id="view-nepali-calendar" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="calendar" class="placeholder-icon"></i>
+                    <h2>Nepali Calendar</h2>
+                    <div id="nepali-calendar-display" class="api-data-display sm">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-english-calendar" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="calendar-days" class="placeholder-icon"></i>
+                    <h2>US Holidays</h2>
+                    <div id="holidays-display" class="api-data-display sm">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-dollar-exchange" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="dollar-sign" class="placeholder-icon"></i>
+                    <h2>USD to EUR Exchange Rate</h2>
+                    <div id="exchange-rate-display" class="api-data-display">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-coins" class="view-section">
+                <div class="placeholder-content">
+                    <i data-lucide="coins" class="placeholder-icon"></i>
+                    <h2>Gold Rate</h2>
+                    <div id="gold-price-display" class="api-data-display">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Panel -->
+        <div class="settings-overlay" id="settings-overlay"></div>
+        <aside class="settings-panel" id="settings-panel">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button class="icon-btn" id="close-settings" aria-label="Close Settings"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div class="settings-content">
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <span class="setting-title">Digital Font</span>
+                        <span class="setting-desc">Use 7-segment digital font format for time</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="font-toggle" checked title="Toggle Digital Font"
+                            aria-label="Toggle Digital Font">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <span class="setting-title">Night Mode</span>
+                        <span class="setting-desc">Switch between light and dark themes</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="night-mode-toggle" title="Toggle Night Mode"
+                            aria-label="Toggle Night Mode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item setting-column">
+                    <div class="setting-label">
+                        <span class="setting-title">Time Format</span>
+                        <span class="setting-desc">Select decimal precision for stopwatch</span>
+                    </div>
+                    <select id="time-format-select" class="styled-select" title="Time Format Precision"
+                        aria-label="Time Format Precision">
+                        <option value="3">00:00.000</option>
+                        <option value="2" selected>00:00.00</option>
+                        <option value="1">00:00.0</option>
+                        <option value="0">00:00</option>
+                    </select>
+                </div>
+
+                <div class="setting-item setting-column">
+                    <div class="setting-label">
+                        <span class="setting-title">Digit Accent</span>
+                        <span class="setting-desc">Affects counting digits only</span>
+                    </div>
+                    <div class="color-picker" id="color-picker">
+                        <button class="color-swatch" data-color="cyan" style="--swatch-color: var(--digit-cyan);"
+                            aria-label="Cyan"></button>
+                        <button class="color-swatch" data-color="coral" style="--swatch-color: var(--digit-coral);"
+                            aria-label="Coral"></button>
+                        <button class="color-swatch" data-color="lime" style="--swatch-color: var(--digit-lime);"
+                            aria-label="Lime"></button>
+                        <button class="color-swatch" data-color="amber" style="--swatch-color: var(--digit-amber);"
+                            aria-label="Amber"></button>
+                        <button class="color-swatch" data-color="violet" style="--swatch-color: var(--digit-violet);"
+                            aria-label="Violet"></button>
+                        <button class="color-swatch" data-color="rose" style="--swatch-color: var(--digit-rose);"
+                            aria-label="Rose"></button>
+                        <button class="color-swatch" data-color="mono" style="--swatch-color: var(--digit-mono);"
+                            aria-label="Mono"></button>
+                    </div>
+                </div>
+
+                <div class="setting-item setting-column">
+                    <div class="setting-label">
+                        <span class="setting-title">Audio Cue</span>
+                        <span class="setting-desc">Select a sound for Timer & Alarm</span>
+                    </div>
+                    <select id="audio-select" class="styled-select" title="Audio Cue">
+                        <option value="lg_g6_ringtone.mp3">LG G6 Ringtone</option>
+                        <option value="oppo_ringtone.mp3">Oppo Ringtone</option>
+                        <option value="mixkit-facility-alarm-sound-999.wav">Facility Alarm</option>
+                        <option value="mixkit-rooster-crowing-in-the-morning-2462.wav">Rooster Crowing</option>
+                        <option value="mixkit-security-facility-breach-alarm-994.wav">Security Breach Alarm</option>
+                    </select>
+                    <button id="audio-preview-btn" class="control-btn btn-secondary mt-8 mt-16">
+                        Preview (7s Loop)
+                    </button>
+                </div>
+
+                <div class="setting-item setting-column">
+                    <div class="setting-label">
+                        <span class="setting-title">Alarm Time</span>
+                        <span class="setting-desc">Set a daily alarm</span>
+                    </div>
+                    <input type="time" id="alarm-time" class="styled-select" title="Alarm Time">
+                </div>
+
+                <div class="setting-item setting-column">
+                    <div class="setting-label">
+                        <span class="setting-title">Ring Duration</span>
+                        <span class="setting-desc">How long the sound plays</span>
+                    </div>
+                    <select id="ring-duration-select" class="styled-select" title="Ring Duration">
+                        <option value="60">1 Minute</option>
+                        <option value="180">3 Minutes</option>
+                        <option value="300">5 Minutes</option>
+                        <option value="420">7 Minutes</option>
+                        <option value="600">10 Minutes</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="settings-footer">
+                <button id="settings-ok-btn" class="btn-primary full-width">OK</button>
+            </div>
+        </aside>
+
+        <!-- Alarm/Timer Notification Overlay -->
+        <div id="alarm-notification" class="alarm-notification-overlay" style="display: none;">
+            <div class="alarm-notification-content">
+                <i data-lucide="bell-ring" class="alarm-bell-icon"></i>
+                <h2 id="notification-title">Alarm Active</h2>
+                <p id="notification-desc">Sound is playing...</p>
+                <button id="stop-alarm-btn" class="control-btn btn-primary">Stop Sound</button>
+            </div>
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+
+    <!-- Modularized JavaScript Files -->
+    <script src="js/app.js"></script>
+    <script src="js/stopwatch.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/alarm.js"></script>
+    <script src="js/time.js"></script>
+</body>
+
+</html>

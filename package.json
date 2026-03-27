@@ -1,0 +1,23 @@
+{
+  "name": "vclock",
+  "version": "1.0.0",
+  "description": "A premium web-based clock, stopwatch, and timer application.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "keywords": [
+    "clock",
+    "stopwatch",
+    "timer",
+    "express",
+    "spa"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^4.18.2"
+  }
+}
