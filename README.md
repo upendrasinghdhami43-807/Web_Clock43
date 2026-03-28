@@ -1,4 +1,4 @@
-# vClock
+# StClock
 
 A premium, responsive, full-stack web application providing Clock, Stopwatch, Timer, and Alarm functionality, built with a separated client/server architecture.
 
