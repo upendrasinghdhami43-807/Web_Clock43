@@ -41,3 +41,22 @@ To run this project locally, execute the following commands in your terminal:
 4. **Access the application:**
    Open your browser and navigate to exactly:
    [http://localhost:3000](http://localhost:3000) (or via the dynamically assigned `PORT` outputted in your console).
+
+## Weather Setup
+
+Add these values to the single root `.env` file:
+
+```env
+# Weather provider setup
+WEATHER_API_URL=https://api.openweathermap.org/data/2.5/weather
+WEATHER_API_KEY=your_weather_api_key_here
+WEATHER_CITY=Kathmandu
+WEATHER_UNITS=metric
+```
+
+Notes:
+- `WEATHER_API_KEY` is required.
+- `WEATHER_API_URL` can be changed if you use a compatible weather provider endpoint.
+- `WEATHER_CITY` controls which city is displayed in the Weather tool.
+- `WEATHER_UNITS` supports `metric` or `imperial`.
+- You can keep only `WEATHER_API_URL` and `WEATHER_API_KEY` initially; city/units use defaults.

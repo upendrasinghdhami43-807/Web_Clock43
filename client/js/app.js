@@ -15,7 +15,7 @@ function initApp() {
     loadSettings();
     setupNavigation();
     setupSettingsToggle();
-    switchView('stopwatch'); // Default start view
+    switchView('home'); // Default start view
     
     // Asynchronously pull dashboard data for the Tools selection
     fetchDashboardData();
@@ -89,6 +89,43 @@ async function fetchDashboardData() {
             }
         }
     } catch (e) { console.error('Nepali logic failed:', e); }
+
+    // 5. Weather
+    try {
+        const wRes = await fetch('/api/weather');
+        const wData = await wRes.json();
+        const wDisplay = document.getElementById('weather-display');
+        if (wDisplay) {
+            if (wData.error) {
+                wDisplay.textContent = 'API Unavailable';
+            } else {
+                const temp = Number.isFinite(wData.temp) ? `${Math.round(wData.temp)}°` : 'N/A';
+                const feelsLike = Number.isFinite(wData.feelsLike) ? `${Math.round(wData.feelsLike)}°` : 'N/A';
+                const minTemp = Number.isFinite(wData.tempMin) ? `${Math.round(wData.tempMin)}°` : 'N/A';
+                const maxTemp = Number.isFinite(wData.tempMax) ? `${Math.round(wData.tempMax)}°` : 'N/A';
+                const city = wData.city || 'Configured City';
+                const country = wData.country ? `, ${wData.country}` : '';
+                const summary = wData.summary || 'Unknown';
+                const description = wData.description || 'No details';
+                const humidity = Number.isFinite(wData.humidity) ? `${wData.humidity}%` : 'N/A';
+                const pressure = Number.isFinite(wData.pressure) ? `${wData.pressure} hPa` : 'N/A';
+                const wind = Number.isFinite(wData.windSpeed) ? `${wData.windSpeed} m/s` : 'N/A';
+                const visibility = Number.isFinite(wData.visibility) ? `${(wData.visibility / 1000).toFixed(1)} km` : 'N/A';
+                const cloudiness = Number.isFinite(wData.cloudiness) ? `${wData.cloudiness}%` : 'N/A';
+
+                wDisplay.innerHTML = `
+                    <strong>${city}${country}</strong><br>
+                    ${temp} · ${summary}<br>
+                    <span style="text-transform: capitalize; color: var(--text-secondary);">${description}</span><br>
+                    <span style="color:var(--text-secondary);font-size:0.94rem;font-weight:500;">
+                        Feels ${feelsLike} | Min ${minTemp} | Max ${maxTemp}<br>
+                        Humidity ${humidity} | Pressure ${pressure}<br>
+                        Wind ${wind} | Visibility ${visibility} | Clouds ${cloudiness}
+                    </span>
+                `;
+            }
+        }
+    } catch (e) { console.error('Weather logic failed:', e); }
 }
 
 // ==== NAVIGATION & VIEW SWITCHING ====
@@ -107,14 +144,25 @@ function setupNavigation() {
     const toolsDropdown = document.getElementById('tools-dropdown');
 
     if (toolsBtn && toolsDropdown) {
+        toolsBtn.setAttribute('aria-expanded', 'false');
+
         toolsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             toolsDropdown.classList.toggle('show');
+            toolsBtn.setAttribute('aria-expanded', toolsDropdown.classList.contains('show') ? 'true' : 'false');
         });
 
         document.addEventListener('click', () => {
             if (toolsDropdown.classList.contains('show')) {
                 toolsDropdown.classList.remove('show');
+                toolsBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && toolsDropdown.classList.contains('show')) {
+                toolsDropdown.classList.remove('show');
+                toolsBtn.setAttribute('aria-expanded', 'false');
             }
         });
 
@@ -128,6 +176,7 @@ function setupNavigation() {
                 const toolId = e.currentTarget.getAttribute('data-tool');
                 switchView(toolId);
                 toolsDropdown.classList.remove('show');
+                toolsBtn.setAttribute('aria-expanded', 'false');
             });
         });
     }

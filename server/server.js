@@ -1,6 +1,6 @@
-require('dotenv').config();
-const express = require('express');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const express = require('express');
 
 const app = express();
 
@@ -36,6 +36,49 @@ app.get('/api/nepali-calendar', async (req, res) => {
         res.json(data);
     } catch (err) {
         console.error('Nepali Calendar API error:', err.message);
+        res.status(500).json({ error: 'Failed' });
+    }
+});
+
+// Route 5: Weather
+// Setup notes:
+// - WEATHER_API_KEY: your weather provider API key.
+// - WEATHER_API_URL: provider endpoint, e.g. https://api.openweathermap.org/data/2.5/weather
+// - WEATHER_CITY: city name for lookup (default: Kathmandu).
+// - WEATHER_UNITS: metric or imperial (default: metric).
+app.get('/api/weather', async (req, res) => {
+    try {
+        const weatherApiUrl = process.env.WEATHER_API_URL || 'https://api.openweathermap.org/data/2.5/weather';
+        const weatherApiKey = process.env.WEATHER_API_KEY;
+        const weatherCity = process.env.WEATHER_CITY || 'Kathmandu';
+        const weatherUnits = process.env.WEATHER_UNITS || 'metric';
+
+        if (!weatherApiKey) {
+            return res.status(500).json({ error: 'Missing WEATHER_API_KEY' });
+        }
+
+        const url = `${weatherApiUrl}?q=${encodeURIComponent(weatherCity)}&units=${encodeURIComponent(weatherUnits)}&appid=${encodeURIComponent(weatherApiKey)}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+
+        const data = await response.json();
+        res.json({
+            city: data?.name || weatherCity,
+            country: data?.sys?.country || '',
+            temp: data?.main?.temp,
+            feelsLike: data?.main?.feels_like,
+            tempMin: data?.main?.temp_min,
+            tempMax: data?.main?.temp_max,
+            humidity: data?.main?.humidity,
+            pressure: data?.main?.pressure,
+            windSpeed: data?.wind?.speed,
+            visibility: data?.visibility,
+            cloudiness: data?.clouds?.all,
+            summary: data?.weather?.[0]?.main || 'Clear',
+            description: data?.weather?.[0]?.description || 'clear sky'
+        });
+    } catch (err) {
+        console.error('Weather API error:', err.message);
         res.status(500).json({ error: 'Failed' });
     }
 });

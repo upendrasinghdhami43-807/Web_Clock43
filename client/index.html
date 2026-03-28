@@ -49,6 +49,9 @@
                         <a href="#" class="dropdown-item" data-tool="coins">
                             <i data-lucide="coins"></i> Gold Rate
                         </a>
+                        <a href="#" class="dropdown-item" data-tool="weather">
+                            <i data-lucide="cloud-sun"></i> Weather
+                        </a>
                     </div>
                 </div>
                 <!-- Controls -->
@@ -67,13 +70,16 @@
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <nav class="side-menu">
+                <button class="menu-item active" data-view="home">
+                    <i data-lucide="house"></i> <span>Home</span>
+                </button>
                 <button class="menu-item" data-view="alarm">
                     <i data-lucide="alarm-clock"></i> <span>Alarm Clock</span>
                 </button>
                 <button class="menu-item" data-view="timer">
                     <i data-lucide="timer"></i> <span>Timer</span>
                 </button>
-                <button class="menu-item active" data-view="stopwatch">
+                <button class="menu-item" data-view="stopwatch">
                     <i data-lucide="play-square"></i> <span>Stopwatch</span>
                 </button>
                 <button class="menu-item" data-view="time">
@@ -95,6 +101,59 @@
             </div>
 
             <!-- Views container -->
+            <div id="view-home" class="view-section active-view">
+                <div class="home-shell">
+                    <div class="home-grid">
+                        <section class="home-card glass-card">
+                            <div class="home-card-title-row">
+                                <i data-lucide="alarm-clock-check" class="home-card-icon"></i>
+                                <h2>Alarm Overview</h2>
+                            </div>
+                            <p>
+                                StClock helps you create dependable daily reminders with clear sound alerts and quick stop controls.
+                                Use this section to understand the main alarm flow before setting your first schedule.
+                            </p>
+                            <ul class="home-list">
+                                <li>Choose your alarm time and preferred ringtone.</li>
+                                <li>Select ring duration that matches your routine.</li>
+                                <li>Keep notification volume ready for reliable wake-up alerts.</li>
+                            </ul>
+                        </section>
+
+                        <section class="home-card glass-card">
+                            <div class="home-card-title-row">
+                                <i data-lucide="book-open-check" class="home-card-icon"></i>
+                                <h2>How To Use</h2>
+                            </div>
+                            <ol class="home-steps">
+                                <li>Open Settings from the top-right controls.</li>
+                                <li>Set Alarm Time, Audio Cue, and Ring Duration.</li>
+                                <li>Click OK to save your settings.</li>
+                                <li>Use Test Alarm Audio to verify sound output.</li>
+                                <li>Leave the app open so alarms can trigger on time.</li>
+                            </ol>
+                        </section>
+                    </div>
+
+                    <footer class="home-footer glass-card" aria-label="Site footer">
+                        <div class="home-footer-links">
+                            <a href="#" class="home-footer-link">Contacts</a>
+                            <span class="dot-sep" aria-hidden="true">|</span>
+                            <a href="#" class="home-footer-link">Terms of use</a>
+                            <span class="dot-sep" aria-hidden="true">|</span>
+                            <a href="#" class="home-footer-link">Privacy</a>
+                            <span class="dot-sep" aria-hidden="true">|</span>
+                            <span class="home-footer-copy">© 2026 StClock.com</span>
+                        </div>
+                        <div class="home-footer-contact">
+                            <span>Email: support@stclock.com</span>
+                            <span class="dot-sep" aria-hidden="true">|</span>
+                            <span>Phone: +1 (415) 555-0126</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
             <div id="view-alarm" class="view-section">
                 <div class="placeholder-content">
                     <i data-lucide="alarm-clock" class="placeholder-icon"></i>
@@ -112,7 +171,7 @@
                 </div>
             </div>
 
-            <div id="view-stopwatch" class="view-section active-view">
+            <div id="view-stopwatch" class="view-section">
                 <div class="stopwatch-container">
                     <div class="time-display-wrapper glass-card">
                         <div class="stopwatch-heading-row">
@@ -188,6 +247,17 @@
                     <i data-lucide="coins" class="placeholder-icon"></i>
                     <h2>Gold Rate</h2>
                     <div id="gold-price-display" class="api-data-display">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-weather" class="view-section">
+                <div class="placeholder-content weather-content">
+                    <i data-lucide="cloud-sun" class="placeholder-icon"></i>
+                    <h2>Weather</h2>
+                    <p class="weather-subtitle">Live weather from your configured city</p>
+                    <div id="weather-display" class="api-data-display weather-display">
                         Loading...
                     </div>
                 </div>
